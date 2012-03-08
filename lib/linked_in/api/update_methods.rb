@@ -24,7 +24,21 @@ module LinkedIn
       #   path = "/people/~/person-activities"
       #   post(path, network_update_to_xml(message))
       # end
-      #
+      def send_message(subject, body, recipient_ids)
+        path = "/people/~/mailbox"
+        recipients = recipient_ids.collect do |r|
+          { "person" => { "_path" => "/people/#{r}" }}
+        end
+        data = {
+          "recipients" => {
+            "values" => recipients
+          },
+          "subject" => subject,
+          "body" => body
+        }
+
+        post(path, data.to_json, "Content-Type" => "application/json")
+      end
       # def send_message(subject, body, recipient_paths)
       #   path = "/people/~/mailbox"
       #
